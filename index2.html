@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- <script   src="https://code.jquery.com/jquery-2.2.4.min.js"   integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="   crossorigin="anonymous"></script> -->
+	<link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css">
+	<script
+	src="https://code.jquery.com/jquery-3.1.1.min.js"
+	integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+	crossorigin="anonymous"></script>
+	<script src="semantic/dist/semantic.min.js"></script>
+</head>
+<body>
+	<div class="ui four column doubling stackable grid container">
+		<div class="column">
+			<img class="ui small rounded image" src="${playList[i].track_image_file}">
+			<div class="ui buttons">
+				<button class="ui button" id="prev">Prev</button>
+				<button class="ui button" id="play">Play</button>
+				<button class="ui button" id="pause">Pause</button>
+				<button class="ui button" id="stop">Stop</button>
+				<button class="ui button" id="next">Next</button>
+				<button class="ui button" id="search">Search</button>
+			</div>
+		</div>
+		<div class="column">
+			<table class="ui selectable celled table">
+				<thead>
+					<tr>
+						<th>Track</th>
+						<th>Artis</th>
+						<th>Album</th>
+					</tr>
+				</thead>
+				<tbody id="table-body">
+				</tbody>
+			</table>
+		</div>
+		<script>
+
+		function song(id, src, track_title, album_title, artis_name, track_image_file) {
+			this.id = id;
+			this.src = src;
+			this.track_title = track_title;
+			this.album_title = album_title;
+			this.artist_name = artis_name;
+			this.track_image_file = track_image_file;
+		}
+
+		function Player(playList){
+			this.playList = playList;
+			this.audio;
+			this.i = 0;									// Current track to play
+			this.l = playList.length;		// Number of total tracks
+
+			this.setTrack = function(idx){
+				this.audio = new Audio(this.playList[idx].src);
+				$("#table-body").empty();
+				for(var i=0; i<this.playList.length; i++){
+					$("#table-body").append(`
+						<tr>
+						<td>${playList[i].track_title}</td>
+						<td>${playList[i].artist_name}</td>
+						<td>${playList[i].album_title}</td>
+						</tr>`)
+					}
+				}
+
+				this.play = function(){
+					this.audio.play();
+				}
+
+				this.pause = function(){
+					this.audio.pause();
+				}
+
+				this.stop = function(){
+					this.audio.pause();
+					this.audio.currentTime = 0;
+				}
+
+				this.next = function(){
+					this.audio.pause();
+					if (this.i < this.l){
+						this.i++;
+						this.setTrack(this.i);
+						this.audio.play();
+					}
+				}
+
+				this.prev = function(){
+					this.audio.pause();
+					if (this.i > 0){
+						this.i--;
+						this.setTrack(this.i);
+						this.audio.play();
+					}
+				}
+
+			}
+
+			var playList = [];
+			playList[0] = new song("0", "music/01-super-mario-bros.mp3", "01-super-mario-bros");
+			playList[1] = new song("1", "music/06-underground.mp3", "06-underground");
+
+			player = new Player(playList);
+			player.setTrack(0);
+			$('#play').click(function(){player.play()});
+			$('#pause').click(function(){player.pause()});
+			$('#stop').click(function(){player.stop()});
+			$('#next').click(function(){player.next()});
+			$('#prev').click(function(){player.prev()});
+
+
+			$('#search').click(function(){
+				var track_result;
+				$.ajax({
+					type: "GET",
+					url: "https://freemusicarchive.org/api/get/tracks.json",
+					data: {
+						api_key: '0OB6GJCT6G1BREKM',
+						// track_id: 122366 // the id of your targeted track
+						genre_handle: 'Blues'
+					},
+					dataType: "json",
+					success: function(response) {
+						playList = [];
+						var l = response.dataset.length;
+						console.log(response.dataset);
+						for (var i=0; i<l; i++){
+							var url =
+							playList[i] =
+							new song("0",
+							"https://files.freemusicarchive.org/" + response.dataset[i].track_file,
+							response.dataset[i].track_title,
+							response.dataset[i].album_title,
+							response.dataset[i].artist_name,
+							response.dataset[i].track_image_file);
+						}
+						player = new Player(playList);
+						player.setTrack(0);
+					},
+					error: function(err) {
+						console.error(err);
+					}
+				});
+			});
+
+
+			</script>
+
+		</body>
+		</html>
