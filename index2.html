@@ -3,6 +3,7 @@
 <head>
 	<!-- <script   src="https://code.jquery.com/jquery-2.2.4.min.js"   integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="   crossorigin="anonymous"></script> -->
 	<link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css">
+	<link rel="stylesheet" type="text/css" href="style.css">
 	<script
 	src="https://code.jquery.com/jquery-3.1.1.min.js"
 	integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
@@ -10,165 +11,232 @@
 	<script src="semantic/dist/semantic.min.js"></script>
 </head>
 <body>
-	<div class="ui two colum container">
-		<div class="ui stackable grid">
-			<div class="four wide column">
-				<div class="ui center aligned segment">
-					<img class="ui centered small rounded image" src="images/disc.png">
-					<div class="fluid ui buttons">
-						<button class="ui icon button" id="prev"><i class="step backward icon"></i></button>
-						<button class="ui icon button" id="play"><i class="play icon"></i></button>
-						<button class="ui icon button" id="pause"><i class="pause icon"></i></button>
-						<button class="ui icon button" id="stop"><i class="stop icon"></i></button>
-						<button class="ui icon button" id="next"><i class="step forward icon"></i></button>
+	<div class="ui container">
+
+		<div class="ui vertical player segment">
+			<div class="ui large secondary inverted pointing menu">
+				<a class="toc item">
+					<i class="sidebar icon"></i>
+				</a>
+				<a class="item" href="index.html">Home</a>
+				<a class="active item" href="index2.html">Player</a>
+			</div>
+		</div>
+
+
+			<div class="ui two colum container">
+				<div class="ui stackable grid">
+					<div class="four wide column">
+						<div class="ui aligned segment">
+							<img id="tack-imag" class="ui medium centered rounded image" src="images/disc.png">
+							<div class="ui divided selection list">
+								<a class="item">
+									<div class="ui horizontal label">Tack:</div>
+									<div id="tack"></div>
+								</a>
+								<a class="item">
+									<div class="ui horizontal label">Artist:</div>
+									<div id="artist"></div>
+								</a>
+								<a class="item">
+									<div class="ui horizontal label">Album:</div>
+									<div id="album"></div>
+								</a>
+							</div>
+							<div class="fluid ui buttons">
+								<button class="ui icon button" id="prev"><i class="step backward icon"></i></button>
+								<button class="ui icon button" id="play"><i class="play icon"></i></button>
+								<button class="ui icon button" id="pause"><i class="pause icon"></i></button>
+								<button class="ui icon button" id="stop"><i class="stop icon"></i></button>
+								<button class="ui icon button" id="next"><i class="step forward icon"></i></button>
+							</div>
+						</div>
+					</div>
+					<div class="twelve wide column">
+						<div class="ui segment">
+							<h2 class="ui header">
+								<i class="music icon"></i>
+								<div class="content">
+									Play List
+								</div>
+							</h2>
+							<div class="ui tiny form">
+								<div class="field">
+									<label>Genres</label>
+									<select id="search-genre" class="ui selection dropdown">
+										<option select value="">All</option>
+										<option value="Blues">Blues</option>
+										<option value="Classical">Classical</option>
+										<option value="Country">Country</option>
+										<option value="Electronic">Electronic</option>
+										<option value="Experimental">Experimental</option>
+										<option value="Folk">Folk</option>
+										<option value="Hip-Hop">Hip-Hop</option>
+										<option value="Instrumental">Instrumental</option>
+										<option value="International">International</option>
+										<option value="Jazz">Jazz</option>
+										<option value="Old-Time / Historic">Old-Time / Historic</option>
+										<option value="Pop">Pop</option>
+										<option value="Rock">Rock</option>
+										<option value="Soul-RnB">Soul-RnB</option>
+										<option value="Spoken">Spoken</option>
+									</select>
+								</div>
+								<button class="ui right labeled icon button" id="search">Search<i class="search icon"></i></button>
+							</div>
+
+							<div class="ui divider"></div>
+
+							<table class="ui small selectable celled table">
+								<thead>
+									<tr>
+										<th>Track</th>
+										<th>Artis</th>
+										<th>Album</th>
+									</tr>
+								</thead>
+								<tbody id="table-body">
+								</tbody>
+							</table>
+						</div>
 					</div>
 				</div>
 			</div>
-			<div class="twelve wide column">
-				<div class="ui segment">
-					<button class="ui right labeled icon button" id="search">Search<i class="search icon"></i></button>
-					<table class="ui small selectable celled table">
-						<thead>
-							<tr>
-								<th>Track</th>
-								<th>Artis</th>
-								<th>Album</th>
-							</tr>
-						</thead>
-						<tbody id="table-body">
-						</tbody>
-						<tfoot>
-						    <tr><th colspan="3">
-						      <div class="ui right floated pagination menu">
-						        <a class="icon item">
-						          <i class="left chevron icon"></i>
-						        </a>
-						        <a class="item">1</a>
-						        <a class="item">2</a>
-						        <a class="item">3</a>
-						        <a class="item">4</a>
-						        <a class="icon item">
-						          <i class="right chevron icon"></i>
-						        </a>
-						      </div>
-						    </th>
-						  </tr>
-						</tfoot>
-					</table>
-				</div>
-			</div>
-			<script>
+		<!-- </div> -->
+	</div>
 
-			function song(id, src, track_title, album_title, artis_name, track_image_file) {
-				this.id = id;
-				this.src = src;
-				this.track_title = track_title;
-				this.album_title = album_title;
-				this.artist_name = artis_name;
-				this.track_image_file = track_image_file;
+	<script>
+
+	function song(id, src, track_title, album_title, artis_name, track_image_file) {
+		this.id = id;
+		this.src = src;
+		this.track_title = track_title;
+		this.album_title = album_title;
+		this.artist_name = artis_name;
+		this.track_image_file = track_image_file;
+	}
+
+	function Player(playList){
+		this.playList = playList;
+		this.audio;
+		this.i = 0;									// Current track to play
+		this.l = playList.length;		// Number of total tracks
+
+		this.load = function(){
+			this.audio = new Audio(this.playList[0].src);
+			$("#table-body").empty();
+			for(var i=0; i<this.playList.length; i++){
+				$("#table-body").append(`
+					<tr onclick="playerActivate(${i})">
+					<td>${playList[i].track_title}</td>
+					<td>${playList[i].artist_name}</td>
+					<td>${playList[i].album_title}</td>
+					</tr>`);
+				}
 			}
 
-			function Player(playList){
-				this.playList = playList;
-				this.audio;
-				this.i = 0;									// Current track to play
-				this.l = playList.length;		// Number of total tracks
-
-				this.setTrack = function(idx){
-					this.audio = new Audio(this.playList[idx].src);
-					$("#table-body").empty();
-					for(var i=0; i<this.playList.length; i++){
-						$("#table-body").append(`
-							<tr>
-							<td>${playList[i].track_title}</td>
-							<td>${playList[i].artist_name}</td>
-							<td>${playList[i].album_title}</td>
-							</tr>`)
-						}
-					}
-
-					this.play = function(){
-						this.audio.play();
-					}
-
-					this.pause = function(){
-						this.audio.pause();
-					}
-
-					this.stop = function(){
-						this.audio.pause();
-						this.audio.currentTime = 0;
-					}
-
-					this.next = function(){
-						this.audio.pause();
-						if (this.i < this.l){
-							this.i++;
-							this.setTrack(this.i);
-							this.audio.play();
-						}
-					}
-
-					this.prev = function(){
-						this.audio.pause();
-						if (this.i > 0){
-							this.i--;
-							this.setTrack(this.i);
-							this.audio.play();
-						}
-					}
-
+			this.setTrack = function(idx){
+				this.i = idx;
+				this.audio = new Audio(this.playList[this.i].src);
+				if(this.playList[this.i].track_image_file){
+					$("#tack-imag").attr("src", this.playList[this.i].track_image_file);
+				}else{
+					$("#tack-imag").attr("src", "images/disc.png");
 				}
+				$("#tack").text(this.playList[this.i].track_title);
+				$("#artist").text(this.playList[this.i].artist_name);
+				$("#album").text(this.playList[this.i].album_title);
+			}
 
-				var playList = [];
-				playList[0] = new song("0", "music/01-super-mario-bros.mp3", "01-super-mario-bros");
-				playList[1] = new song("1", "music/06-underground.mp3", "06-underground");
+			this.play = function(){
+				this.audio.play();
+			}
 
-				player = new Player(playList);
-				player.setTrack(0);
-				$('#play').click(function(){player.play()});
-				$('#pause').click(function(){player.pause()});
-				$('#stop').click(function(){player.stop()});
-				$('#next').click(function(){player.next()});
-				$('#prev').click(function(){player.prev()});
+			this.pause = function(){
+				this.audio.pause();
+			}
+
+			this.stop = function(){
+				this.audio.pause();
+				this.audio.currentTime = 0;
+			}
+
+			this.next = function(){
+				this.audio.pause();
+				if (this.i < this.l -1){
+					this.i++;
+					this.setTrack(this.i);
+					this.play();
+				}
+			}
+
+			this.prev = function(){
+				this.audio.pause();
+				if (this.i > 0){
+					this.i--;
+					this.setTrack(this.i);
+					this.play();
+				}
+			}
+
+		}
+
+		var playList = [];
+		playList[0] = new song("0", "music/01-super-mario-bros.mp3", "01-super-mario-bros");
+		playList[1] = new song("1", "music/06-underground.mp3", "06-underground");
+
+		player = new Player(playList);
+		player.load();
+		$('#play').click(function(){player.play()});
+		$('#pause').click(function(){player.pause()});
+		$('#stop').click(function(){player.stop()});
+		$('#next').click(function(){player.next()});
+		$('#prev').click(function(){player.prev()});
 
 
-				$('#search').click(function(){
-					var track_result;
-					$.ajax({
-						type: "GET",
-						url: "https://freemusicarchive.org/api/get/tracks.json",
-						data: {
-							api_key: '0OB6GJCT6G1BREKM',
-							// track_id: 122366 // the id of your targeted track
-							genre_handle: 'Blues'
-						},
-						dataType: "json",
-						success: function(response) {
-							playList = [];
-							var l = response.dataset.length;
-							console.log(response.dataset);
-							for (var i=0; i<l; i++){
-								var url =
-								playList[i] =
-								new song("0",
-								"https://files.freemusicarchive.org/" + response.dataset[i].track_file,
-								response.dataset[i].track_title,
-								response.dataset[i].album_title,
-								response.dataset[i].artist_name,
-								response.dataset[i].track_image_file);
-							}
-							player = new Player(playList);
-							player.setTrack(0);
-						},
-						error: function(err) {
-							console.error(err);
+		$('#search').click(function(){
+			var track_result;
+			player.stop();
+			$.ajax({
+				type: "GET",
+				url: "https://freemusicarchive.org/api/get/tracks.json",
+				data: {
+					api_key: '0OB6GJCT6G1BREKM',
+					genre_handle: $('#search-genre :selected').val()
+				},
+				dataType: "json",
+				success: function(response) {
+					playList = [];
+					var l = response.dataset.length;
+					if(l > 0){
+						for (var i=0; i<l & i< 99; i++){
+							var url =
+							playList[i] =
+							new song("0",
+							"https://files.freemusicarchive.org/" + response.dataset[i].track_file,
+							response.dataset[i].track_title,
+							response.dataset[i].album_title,
+							response.dataset[i].artist_name,
+							response.dataset[i].track_image_file);
 						}
-					});
-				});
+						player = new Player(playList);
+						player.load();
+					}
+				},
+				error: function(err) {
+					console.error(err);
+				}
+			});
+		});
 
 
-				</script>
+		function playerActivate(idx){
+			player.stop();
+			player.setTrack(idx);
+			player.play();
+		};
 
-			</body>
-			</html>
+		</script>
+
+	</body>
+	</html>
