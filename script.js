@@ -37,6 +37,7 @@ function Player(playList){
       $("#tack").text(this.playList[this.i].track_title);
       $("#artist").text(this.playList[this.i].artist_name);
       $("#album").text(this.playList[this.i].album_title);
+      $("#table-body tr").eq(idx).addClass("active");
     }
 
     this.play = function(){
@@ -54,10 +55,11 @@ function Player(playList){
     this.stop = function(){
       this.audio.pause();
       this.audio.currentTime = 0;
+      $("#table-body tr").eq(this.i).removeClass("active");
     }
 
     this.next = function(){
-      this.audio.pause();
+      this.stop();
       if (this.i < this.l -1){
         this.i++;
         this.setTrack(this.i);
@@ -66,14 +68,14 @@ function Player(playList){
     }
 
     this.prev = function(){
-      this.audio.pause();
+      this.stop();
       if (this.i > 0){
         this.i--;
         this.setTrack(this.i);
         this.play();
       }
     }
-    
+
 }
 
 function playerActivate(idx){
