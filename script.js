@@ -29,21 +29,21 @@ function Player(playList){
     this.setTrack = function(idx){
       this.i = idx;
       this.audio = new Audio(this.playList[this.i].src);
-      if(this.playList[this.i].track_image_file){
-        $("#tack-imag").attr("src", this.playList[this.i].track_image_file);
-      }else{
-        $("#tack-imag").attr("src", "images/disc.png");
-      }
-      $("#tack").text(this.playList[this.i].track_title);
-      $("#artist").text(this.playList[this.i].artist_name);
-      $("#album").text(this.playList[this.i].album_title);
-      $("#table-body tr").eq(idx).addClass("active");
     }
 
     this.play = function(){
       var isPlaying = this.audio.currentTime > 0 &&
       !this.audio.paused && !this.audio.ended;
       if (!isPlaying) {
+        if(this.playList[this.i].track_image_file){
+          $("#tack-imag").attr("src", this.playList[this.i].track_image_file);
+        }else{
+          $("#tack-imag").attr("src", "images/disc.png");
+        }
+        $("#tack").text(this.playList[this.i].track_title);
+        $("#artist").text(this.playList[this.i].artist_name);
+        $("#album").text(this.playList[this.i].album_title);
+        $("#table-body tr").eq(this.i).addClass("active");
         this.audio.play();
       }
     }
