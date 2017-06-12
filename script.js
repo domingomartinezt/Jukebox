@@ -83,3 +83,49 @@ function playerActivate(idx){
   player.setTrack(idx);
   player.play();
 };
+
+$(document).ready(function(){
+  var playList = [];
+  player = new Player(playList);
+
+  $('#play').click(function(){player.play()});
+  $('#pause').click(function(){player.pause()});
+  $('#stop').click(function(){player.stop()});
+  $('#next').click(function(){player.next()});
+  $('#prev').click(function(){player.prev()});
+
+  $('#search').click(function(){
+    var track_result;
+    $.ajax({
+      type: "GET",
+      url: "https://freemusicarchive.org/api/get/tracks.json",
+      data: {
+        api_key: '0OB6GJCT6G1BREKM',
+        genre_handle: $('#search-genre :selected').val()
+      },
+      dataType: "json",
+      success: function(response) {
+        playList = [];
+        var l = response.dataset.length;
+        if(l > 0){
+          for (var i=0; i<l & i< 99; i++){
+            var url =
+            playList[i] =
+            new song("0",
+            "https://files.freemusicarchive.org/" + response.dataset[i].track_file,
+            response.dataset[i].track_title,
+            response.dataset[i].album_title,
+            response.dataset[i].artist_name,
+            response.dataset[i].track_image_file);
+          }
+          if(player.l){player.stop()};
+          player = new Player(playList);
+          player.load();
+        }
+      },
+      error: function(err) {
+        console.error(err);
+      }
+    });
+  });
+});
